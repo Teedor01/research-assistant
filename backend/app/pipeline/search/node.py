@@ -74,6 +74,8 @@ async def run_search(
                 "credibility_score": None,  
                 "status": "pending",
                 "discard_reason": None,
+                "is_redundant": False,
+                "rank": None,
             })
 
     state["sources"].extend(new_sources)

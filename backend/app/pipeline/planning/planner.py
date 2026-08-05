@@ -21,11 +21,11 @@ def _fallback_queries(topic: str) -> list[str]:
 async def plan_queries(state: ResearchState, *, llm: LLMProvider) -> ResearchState:
     topic = state["topic"]
     intent = state["intent"]
+    state["sub_queries"] = queries
+    state["initial_sub_queries"] = list(queries)
 
     if intent is None:
-        # Defensive check: this node should never run before Intent Analyzer,
-        # but fail loudly rather than silently misbehaving if the graph is
-        # wired incorrectly.
+        
         raise RuntimeError("plan_queries called with no intent in state")
 
     try:
@@ -34,7 +34,7 @@ async def plan_queries(state: ResearchState, *, llm: LLMProvider) -> ResearchSta
             user_prompt=build_planning_prompt(topic, intent),
             response_model=QueryPlanSchema,
             tier=ModelTier.FAST,
-            temperature=0.2,  # slight variation helps avoid overly literal near-duplicates
+            temperature=0.25,  
         )
         queries = response.data.sub_queries[:MAX_SUB_QUERIES]
         state["metrics"]["query_planner"]["tokens_used"] = response.tokens_used.total_tokens

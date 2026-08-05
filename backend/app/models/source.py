@@ -1,6 +1,7 @@
 from typing import TypedDict, Literal, Optional
 
 
+# app/models/source.py — updated
 class SourceDocument(TypedDict):
     id: str
     url: str
@@ -13,3 +14,5 @@ class SourceDocument(TypedDict):
     credibility_score: Optional[float]
     status: Literal["pending", "extracted", "failed", "discarded"]
     discard_reason: Optional[str]
+    is_redundant: bool       
+    rank: Optional[int]      
