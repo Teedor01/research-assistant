@@ -20,7 +20,7 @@ Respond with ONLY a JSON object matching the provided schema, no other text."""
 
 def build_synthesis_prompt(topic: str, source_title: str, source_text: str) -> str:
     
-    truncated = source_text[:8000]
+    truncated = source_text[:2500]
     return (
         f"Research topic: {topic}\n"
         f"Source title: {source_title}\n\n"

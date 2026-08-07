@@ -21,8 +21,7 @@ def _fallback_queries(topic: str) -> list[str]:
 async def plan_queries(state: ResearchState, *, llm: LLMProvider) -> ResearchState:
     topic = state["topic"]
     intent = state["intent"]
-    state["sub_queries"] = queries
-    state["initial_sub_queries"] = list(queries)
+    
 
     if intent is None:
         
@@ -50,13 +49,14 @@ async def plan_queries(state: ResearchState, *, llm: LLMProvider) -> ResearchSta
         queries = _fallback_queries(topic)
 
     state["sub_queries"] = queries
+    state["initial_sub_queries"] = list(queries)   
     state["round_number"] = 1
     state["research_log"].append({
         "round_number": 1,
         "queries_run": queries,
-        "sources_found": 0,       
-        "new_facts_added": 0,     
-        "redundant_sources": 0,   
+        "sources_found": 0,
+        "new_facts_added": 0,
+        "redundant_sources": 0,
     })
 
     return state

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-REQUEST_TIMEOUT_BUFFER_SECONDS = 60
+REQUEST_TIMEOUT_BUFFER_SECONDS = 240
 
 
 @router.post(

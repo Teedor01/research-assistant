@@ -39,6 +39,7 @@ async def write_response(state: ResearchState, *, llm: LLMProvider) -> ResearchS
             response_model=WriterOutputSchema,
             tier=ModelTier.REASONING,
             temperature=0.4,  # some room for natural prose, but facts are fixed by the context
+            max_tokens = 6000
         )
         draft = response.data
         state["metrics"]["writer"]["tokens_used"] = response.tokens_used.total_tokens

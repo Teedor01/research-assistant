@@ -3,7 +3,7 @@ import { ApiErrorResponse, ResearchApiError, ResearchResponse } from "./types";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 
 
-const CLIENT_TIMEOUT_MS = 90_000;
+const CLIENT_TIMEOUT_MS = 250_000;
 
 export async function fetchResearch(topic: string): Promise<ResearchResponse> {
   const controller = new AbortController();

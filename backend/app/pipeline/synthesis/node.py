@@ -9,21 +9,23 @@ from app.pipeline.synthesis.merge import merge_into_knowledge, _empty_knowledge
 from app.core.observability import observed_node
 
 logger = logging.getLogger(__name__)
-
+SYNTHESIS_CONCURRENCY_LIMIT = 1
+_synthesis_semaphore = asyncio.Semaphore(SYNTHESIS_CONCURRENCY_LIMIT)  
 
 async def _extract_from_source(source: dict, topic: str, llm: LLMProvider) -> SourceKnowledge | None:
-    try:
-        response = await llm.generate_structured(
-            system_prompt=SYNTHESIS_SYSTEM_PROMPT,
-            user_prompt=build_synthesis_prompt(topic, source["title"], source["extracted_text"] or ""),
-            response_model=SourceKnowledge,
-            tier=ModelTier.REASONING,  
-            temperature=0.0,
-        )
-        return response.data
-    except ValueError as e:
-        logger.warning("Synthesis extraction failed for source_id=%s: %s", source["id"], e)
-        return None
+    async with _synthesis_semaphore:
+        try:
+            response = await llm.generate_structured(
+                system_prompt=SYNTHESIS_SYSTEM_PROMPT,
+                user_prompt=build_synthesis_prompt(topic, source["title"], source["extracted_text"] or ""),
+                response_model=SourceKnowledge,
+                tier=ModelTier.REASONING,
+                temperature=0.0,
+            )
+            return response.data
+        except ValueError as e:
+            logger.warning("Synthesis extraction failed for source_id=%s: %s", source["id"], e)
+            return None
 
 
 @observed_node("knowledge_synthesizer")

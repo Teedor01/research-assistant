@@ -2,6 +2,10 @@ import json
 import logging
 from typing import Type, TypeVar
 from openai import AsyncOpenAI, APIError, APITimeoutError, RateLimitError
+
+from app.providers.llm.base import (
+    LLMProvider, ModelTier, LLMResponse, TokenUsage, StructuredLLMResponse,
+)
 from pydantic import BaseModel, ValidationError
 import asyncio
 
@@ -18,7 +22,7 @@ RETRYABLE_EXCEPTIONS = (APIError, APITimeoutError, RateLimitError)
 
 class RequestyLLMProvider(LLMProvider):
     """Requesty implementation of LLMProvider. This is the ONLY file in the
-    codebase that should import the openai SDK — everything else depends on
+    codebase that should import the openai SDK... everything else depends on
     LLMProvider, not on Requesty or OpenAI specifically."""
 
     def __init__(self, settings: Settings):
@@ -90,6 +94,8 @@ class RequestyLLMProvider(LLMProvider):
             finish_reason=choice.finish_reason,
         )
 
+    
+
     async def generate_structured(
         self,
         *,
@@ -98,7 +104,8 @@ class RequestyLLMProvider(LLMProvider):
         response_model: Type[T],
         tier: ModelTier = ModelTier.FAST,
         temperature: float = 0.0,
-    ) -> T:
+        max_tokens: int = 4000,
+    ) -> StructuredLLMResponse[T]:
         model = self._resolve_model(tier)
         schema_hint = json.dumps(response_model.model_json_schema(), indent=2)
         full_system_prompt = (
@@ -114,12 +121,14 @@ class RequestyLLMProvider(LLMProvider):
                 {"role": "user", "content": user_prompt},
             ],
             temperature=temperature,
+            max_tokens = max_tokens,
         )
-        raw = completion.choices[0].message.content or ""
+        choice = completion.choices[0]
+        raw = choice.message.content or ""
 
         try:
             parsed = self._parse_json_defensively(raw)
-            return response_model.model_validate(parsed)
+            data = response_model.model_validate(parsed)
         except (json.JSONDecodeError, ValidationError) as e:
             logger.error(
                 "Structured generation failed to parse for model=%s. Raw output: %r",
@@ -128,6 +137,14 @@ class RequestyLLMProvider(LLMProvider):
             raise ValueError(
                 f"LLM returned invalid structured output for {response_model.__name__}"
             ) from e
+
+        return StructuredLLMResponse(
+            data=data,
+            tokens_used=self._extract_usage(completion),
+            model=model,
+            finish_reason=choice.finish_reason,
+        )
+
 
     @staticmethod
     def _parse_json_defensively(raw: str) -> dict:
