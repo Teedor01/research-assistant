@@ -1,6 +1,6 @@
 from app.models.knowledge import StructuredKnowledge, Claim
 
-MAX_CLAIMS_IN_CONTEXT = 60  
+MAX_CLAIMS_IN_CONTEXT = 20  
 
 
 def _confidence_tag(claim: Claim, unresolved_concept_ids: set[str]) -> str:

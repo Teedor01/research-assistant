@@ -111,7 +111,12 @@ class RequestyLLMProvider(LLMProvider):
         full_system_prompt = (
             f"{system_prompt}\n\n"
             f"Respond with ONLY a JSON object matching this schema, no other text, "
-            f"no markdown fences:\n{schema_hint}"
+            f"no markdown fences:\n{schema_hint}\n\n"
+            f"IMPORTANT: Your response must be a direct instance of this schema. "
+            f"Do NOT include schema-structure keys like \"$defs\", \"properties\", "
+            f"\"required\", or \"type\" in your response. Only include the actual "
+            f"field names (e.g. \"simple_explanation\", \"core_concepts\") with real "
+            f"values filled in directly, as a flat JSON object."
         )
 
         completion = await self._call_with_retries(
