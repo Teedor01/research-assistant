@@ -5,19 +5,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#0E1620",
-        "ink-deep": "#080D13",
-        card: "#16212C",
-        "card-raised": "#1C2A36",
-        border: "#2A3B48",
-        "border-soft": "#22303C",
-        paper: "#E9E3D6",
-        muted: "#93A5B3",
-        "muted-dim": "#5F707D",
-        brass: "#C89B4A",
-        "brass-dim": "#8F7038",
-        "brass-bright": "#E0B563",
-        sage: "#7FA37A",
+        ink: "#FFFFFF",
+        "ink-deep": "#F8FAFC",
+        card: "#F8FAFC",
+        "card-raised": "#FFFFFF",
+        border: "#E2E8F0",
+        "border-soft": "#E2E8F0",
+        paper: "#111827",
+        muted: "#64748B",
+        "muted-dim": "#64748B",
+        brass: "#2563EB",
+        "brass-dim": "#1D4ED8",
+        "brass-bright": "#2563EB",
+        sage: "#2563EB",
         rose: "#C1666B",
       },
       fontFamily: {
@@ -29,7 +29,7 @@ const config: Config = {
         wide2: "0.14em",
       },
       boxShadow: {
-        card: "0 1px 0 0 rgba(233, 227, 214, 0.04) inset, 0 8px 24px -12px rgba(0,0,0,0.5)",
+        card: "0 1px 0 0 rgba(17, 24, 39, 0.04) inset, 0 8px 24px -12px rgba(0,0,0,0.1)",
       },
       keyframes: {
         blink: { "0%, 49%": { opacity: "1" }, "50%, 100%": { opacity: "0" } },

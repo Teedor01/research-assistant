@@ -30,21 +30,21 @@ export default function LoadingState({ topic }: { topic: string }) {
   return (
     <div className="w-full max-w-2xl mx-auto text-center animate-fadeUp" role="status" aria-live="polite">
       <p className="eyebrow mb-3">Researching</p>
-      <h2 className="font-display text-2xl sm:text-3xl text-paper mb-8 leading-snug">
+      <h2 className="font-display text-2xl sm:text-3xl text-[#111827] mb-8 leading-snug">
         &ldquo;{topic}&rdquo;
       </h2>
 
-      <div className="inline-flex items-center gap-3 rounded-full border border-border-soft bg-card px-5 py-3">
+      <div className="inline-flex items-center gap-3 rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-5 py-3">
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brass opacity-60" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-brass" />
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2563EB] opacity-60" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2563EB]" />
         </span>
-        <span className="font-mono text-sm text-muted">{STAGES[stageIndex]}</span>
+        <span className="font-mono text-sm text-[#64748B]">{STAGES[stageIndex]}</span>
       </div>
 
       {showSlowNotice && (
-        <p className="mt-8 text-sm text-muted-dim max-w-md mx-auto animate-fadeUp">
-          Still working — thorough research can take a little while, especially for broad
+        <p className="mt-8 text-sm text-[#64748B] max-w-md mx-auto animate-fadeUp">
+          Still working thorough research can take a little while, especially for broad
           or comparison topics.
         </p>
       )}
