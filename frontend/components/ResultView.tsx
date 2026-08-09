@@ -17,13 +17,13 @@ export default function ResultView({ data, onReset }: Props) {
       <button
         type="button"
         onClick={onReset}
-        className="font-mono text-xs text-muted hover:text-brass mb-6 inline-flex items-center gap-1.5"
+        className="font-mono text-xs text-[#64748B] hover:text-[#2563EB] mb-6 inline-flex items-center gap-1.5"
       >
         <span aria-hidden="true">←</span> Research another topic
       </button>
 
       <p className="eyebrow mb-2">Research summary</p>
-      <h1 className="font-display text-3xl sm:text-4xl text-paper leading-tight mb-6">
+      <h1 className="font-display text-3xl sm:text-4xl text-[#111827] leading-tight mb-6">
         {data.topic}
       </h1>
 
